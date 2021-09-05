@@ -27,7 +27,7 @@ class SelectedCastsCollectionViewCell: UICollectionViewCell {
     
     private let castNameLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.textColor = .white
         label.font = .boldSystemFont(ofSize: 14)
         label.adjustsFontSizeToFitWidth = true
@@ -38,7 +38,7 @@ class SelectedCastsCollectionViewCell: UICollectionViewCell {
     
     private let castCharacterLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment = .left
+        label.textAlignment = .center
         label.textColor = .gray
         label.font = .boldSystemFont(ofSize: 14)
         label.adjustsFontSizeToFitWidth = true

@@ -159,9 +159,11 @@ class SelectedMovieController: UIViewController {
         } else {
             
             if let serialNotNil = serial {
+                
                 NetworkingManager.shared.fetchSerialDetail(id: String(describing: serialNotNil.id)) { [self] response in
                     switch response {
                     case .success(let details):
+                        print("Serial")
                         self.fetchDataSerial(id: String(describing: details.id))
                         guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(details.backdropPath!)") else { return }
                         let gengres = details.genres.prefix(2).compactMap{ $0.name }.joined(separator: ", ")
@@ -213,7 +215,11 @@ class SelectedMovieController: UIViewController {
 extension SelectedMovieController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        movieCastViewModel.numbersOfRows()
+        if serial != nil {
+            return serialCastViewModel.numbersOfRows()
+        } else {
+            return movieCastViewModel.numbersOfRows()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
