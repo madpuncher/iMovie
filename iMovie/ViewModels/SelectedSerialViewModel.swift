@@ -11,13 +11,25 @@ class SelectedSerialViewModel {
     
     private var casts = [CastSerial]()
     private var networkManager = NetworkingManager.shared
-    
+    public var selectedSerialId: String?
+
     func getData(id: String, completion: @escaping () -> ()) {
         networkManager.fetchSerialCast(id: id) { [weak self] response in
             switch response {
             case .success(let casts):
                 self?.casts = casts
                 completion()
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getSerialLink(id: String, completion: @escaping (String?) -> Void) {
+        networkManager.fetchSerialVideo(id: id) { response in
+            switch response {
+            case .success(let link):
+                completion(link)
             case .failure(let error):
                 print(error)
             }

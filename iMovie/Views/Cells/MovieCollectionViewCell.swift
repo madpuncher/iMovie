@@ -82,7 +82,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     //MARK: Конфигурируем свойства представлений на основе модели данных
     func configure(movie: Movie) {
         movieNameLabel.text = movie.originalTitle
-        movieDateLabel.text = converDate(forDate: movie.releaseDate)
+        movieDateLabel.text = movie.releaseDate.convertDate()
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.backdropPath)") else { return }
         imageConfigure(url: url)
     }
@@ -101,21 +101,6 @@ class MovieCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-    }
-    
-    //MARK: Конвертируем дату в необходимый вид
-    private func converDate(forDate date: String) -> String {
-        
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd"
-        
-        guard let showDate = inputFormatter.date(from: date) else { return "2020-02-02"}
-        
-        inputFormatter.dateFormat = "MMM d, yyyy"
-        
-        let resultString = inputFormatter.string(from: showDate)
-        
-        return resultString
     }
     
     required init?(coder: NSCoder) {

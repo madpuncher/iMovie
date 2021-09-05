@@ -83,7 +83,7 @@ class TVCollectionViewCell: UICollectionViewCell {
     //MARK: Конфигурируем свойства представлений на основе модели данных
     func configure(serie: Series) {
         nameTVLabel.text = serie.originalName
-        dateTVLabel.text = converDate(forDate: serie.firstAirDate)
+        dateTVLabel.text = serie.firstAirDate.convertDate()
         guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(serie.backdropPath ?? "")") else { return }
         imageConfigure(url: url)
     }
@@ -109,20 +109,6 @@ class TVCollectionViewCell: UICollectionViewCell {
                 }
             }
         }
-    }
-    //MARK: Конвертируем дату в необходимый вид
-    private func converDate(forDate date: String) -> String {
-        
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd"
-        
-        guard let showDate = inputFormatter.date(from: date) else { return "2020-02-02"}
-        
-        inputFormatter.dateFormat = "MMM d, yyyy"
-        
-        let resultString = inputFormatter.string(from: showDate)
-        
-        return resultString
     }
     
     required init?(coder: NSCoder) {

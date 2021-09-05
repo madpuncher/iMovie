@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -29,6 +29,7 @@
 		02D71D3F26E4CBDD002BD97C /* SelectedViewControllerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71D3E26E4CBDD002BD97C /* SelectedViewControllerViews.swift */; };
 		02D71D4126E4CD43002BD97C /* Int + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71D4026E4CD43002BD97C /* Int + Extension.swift */; };
 		02D71D4326E4CDF5002BD97C /* String + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71D4226E4CDF5002BD97C /* String + Extension.swift */; };
+		02D71D4626E4D8F5002BD97C /* Cosmos in Frameworks */ = {isa = PBXBuildFile; productRef = 02D71D4526E4D8F5002BD97C /* Cosmos */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02D71D4626E4D8F5002BD97C /* Cosmos in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +213,9 @@
 			dependencies = (
 			);
 			name = iMovie;
+			packageProductDependencies = (
+				02D71D4526E4D8F5002BD97C /* Cosmos */,
+			);
 			productName = iMovie;
 			productReference = 02D71CF926E115E1002BD97C /* iMovie.app */;
 			productType = "com.apple.product-type.application";
@@ -238,6 +243,9 @@
 				Base,
 			);
 			mainGroup = 02D71CF026E115E1002BD97C;
+			packageReferences = (
+				02D71D4426E4D8F5002BD97C /* XCRemoteSwiftPackageReference "Cosmos" */,
+			);
 			productRefGroup = 02D71CFA26E115E1002BD97C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -479,6 +487,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		02D71D4426E4D8F5002BD97C /* XCRemoteSwiftPackageReference "Cosmos" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/Cosmos";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 23.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		02D71D4526E4D8F5002BD97C /* Cosmos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02D71D4426E4D8F5002BD97C /* XCRemoteSwiftPackageReference "Cosmos" */;
+			productName = Cosmos;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 02D71CF126E115E1002BD97C /* Project object */;
 }

@@ -210,6 +210,74 @@ class NetworkingManager {
         }
         .resume()
     }
+    
+    //MARK: VIDEO
+    func fetchMovieVideo(id: String, completion: @escaping (Result<String?, Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)/watch/providers?\(Constants.apiKey)") else {
+            completion(.failure(ErrorTypes.badURL))
+            print("ERROR GET URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard
+                let data = data,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode >= 200 && response.statusCode < 300 else {
+                completion(.failure(ErrorTypes.badServerResponse))
+                print("ERROR URL RESPONSE")
+                return
+            }
+            
+            do {
+                let video = try JSONDecoder().decode(MovieVideo.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(video.results.us.link))
+                }
+                
+            } catch let error {
+                print(error.localizedDescription)
+                completion(.success(""))
+            }
+        }
+        .resume()
+    }
+    
+    func fetchSerialVideo(id: String, completion: @escaping (Result<String?, Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/tv/\(id)/watch/providers?\(Constants.apiKey)") else {
+            completion(.failure(ErrorTypes.badURL))
+            print("ERROR GET URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard
+                let data = data,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode >= 200 && response.statusCode < 300 else {
+                completion(.failure(ErrorTypes.badServerResponse))
+                print("ERROR URL RESPONSE")
+                return
+            }
+            
+            do {
+                let video = try JSONDecoder().decode(SerieVideo.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(video.results.us.link))
+                }
+                
+            } catch let error {
+                print(error.localizedDescription)
+                completion(.success(""))
+            }
+        }
+        .resume()
+    }
+
 }
 
 enum ErrorTypes: Error {

@@ -91,3 +91,24 @@ struct CastMovie: Codable {
     }
 }
 
+//MARK: VIDEO
+
+struct MovieVideo: Codable {
+    
+    let id: Int
+    let results: Results
+}
+
+struct Results: Codable {
+
+    let us: MovieLink
+
+    enum CodingKeys: String, CodingKey {
+        case us = "US"
+    }
+}
+
+struct MovieLink: Codable {
+    let link: String?
+}
+

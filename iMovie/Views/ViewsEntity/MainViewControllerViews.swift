@@ -8,6 +8,7 @@
 import UIKit
 
 final class MainViewControllerViews {
+    
     public let searchButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "loupe"), for: .normal)

@@ -88,3 +88,24 @@ struct CastSerial: Codable {
     }
 }
 
+//MARK: VIDEO
+
+struct SerieVideo: Codable {
+    
+    let id: Int
+    let results: SerieResults
+}
+
+struct SerieResults: Codable {
+
+    let us: MovieLink
+
+    enum CodingKeys: String, CodingKey {
+        case us = "US"
+    }
+}
+
+struct SerieLink: Codable {
+    let link: String?
+}
+

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Cosmos
 
 final class SelectedViewControllerViews {
     
@@ -66,7 +67,7 @@ final class SelectedViewControllerViews {
         let label = UILabel()
         label.text = "7.9"
         label.textColor = #colorLiteral(red: 0.9853249192, green: 0.7781492472, blue: 0.2004194856, alpha: 1)
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .boldSystemFont(ofSize: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -102,6 +103,29 @@ final class SelectedViewControllerViews {
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    public let stars: CosmosView = {
+        let view = CosmosView()
+        view.settings.updateOnTouch = false
+        view.settings.filledColor = #colorLiteral(red: 0.9853249192, green: 0.7781492472, blue: 0.2004194856, alpha: 1)
+        view.settings.emptyColor = .gray
+        view.settings.filledBorderColor = #colorLiteral(red: 0.9853249192, green: 0.7781492472, blue: 0.2004194856, alpha: 1)
+        view.settings.emptyBorderColor = .gray
+        view.settings.starSize = 20
+        view.settings.starMargin = 4
+        return view
+    }()
+    
+    public let showButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Watch Now", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = #colorLiteral(red: 0.8895335793, green: 0.1325577796, blue: 0.2192041278, alpha: 1)
+        button.layer.cornerRadius = 5
+        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
 }
 
