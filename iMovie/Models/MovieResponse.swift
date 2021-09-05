@@ -7,6 +7,7 @@
 
 import Foundation
 
+//MARK: MAIN MENU INFO RESPONSE
 struct MovieResponse: Codable {
     
     let results: [Movie]
@@ -43,3 +44,50 @@ struct Movie: Codable {
         case voteCount = "vote_count"
     }
 }
+
+//MARK: DETAILS
+struct MovieDetailsResponse: Codable {
+    
+    let backdropPath: String?
+    let genres: [GenreMovies]
+    let originalTitle: String
+    let overview: String
+    let releaseDate: String
+    let runtime: Int
+    let id: Int
+    let voteAverage: Double
+
+    enum CodingKeys: String, CodingKey {
+        case backdropPath = "backdrop_path"
+        case genres
+        case id
+        case originalTitle = "original_title"
+        case overview
+        case releaseDate = "release_date"
+        case runtime
+        case voteAverage = "vote_average"
+    }
+}
+
+struct GenreMovies: Codable {
+    let id: Int
+    let name: String
+}
+
+//MARK: CAST
+struct MovieCasts: Codable {
+    let cast: [CastMovie]
+}
+
+struct CastMovie: Codable {
+    let name: String
+    let profilePath: String?
+    let character: String
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case profilePath = "profile_path"
+        case character
+    }
+}
+

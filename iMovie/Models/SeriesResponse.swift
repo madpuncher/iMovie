@@ -7,6 +7,7 @@
 
 import Foundation
 
+//MARK: MAIN MENU INFO RESPONSE
 struct SeriesResponse: Codable {
     
     let results: [Series]
@@ -41,3 +42,49 @@ struct Series: Codable {
         case voteCount = "vote_count"
     }
 }
+//MARK: DETAILS
+struct SerialDetailResponse: Codable {
+    let backdropPath: String?
+    let episodeRunTime: [Int]?
+    let firstAirDate: String
+    let genres: [Genre]
+    let id: Int
+    let name: String
+    let overview: String
+    let voteAverage: Double
+
+    enum CodingKeys: String, CodingKey {
+        case backdropPath = "backdrop_path"
+        case episodeRunTime = "episode_run_time"
+        case genres
+        case id
+        case name
+        case firstAirDate = "first_air_date"
+        case overview
+        case voteAverage = "vote_average"
+    }
+}
+
+struct Genre: Codable {
+    let id: Int
+    let name: String
+}
+
+//MARK: CASTS
+struct SerialCasts: Codable {
+    let cast: [CastSerial]
+}
+
+struct CastSerial: Codable {
+    let name: String
+    let profilePath: String?
+    let character: String?
+
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case profilePath = "profile_path"
+        case character
+    }
+}
+

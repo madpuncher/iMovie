@@ -9,46 +9,34 @@ import UIKit
 
 class SelectedMovieController: UIViewController {
     
-    private let goBackButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    //MARK: Constants
+    private lazy var views = SelectedViewControllerViews()
     
-    private let saveButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "save"), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
-        button.tintColor = .white
-        button.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private lazy var castCollectionView = views.castCollectionView
     
-    private let movieImage: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
-    }()
+    private lazy var goBackButton = views.goBackButton
     
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Wonder Woman"
-        label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 40)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.layer.shadowColor = UIColor.black.cgColor
-        label.layer.shadowRadius = 3.0
-        label.layer.shadowOpacity = 1.0
-        label.layer.shadowOffset = CGSize(width: 4, height: 4)
-        label.layer.masksToBounds = false
-        return label
-    }()
+    private lazy var saveButton = views.saveButton
     
+    private lazy var movieImage = views.movieImage
+    
+    private lazy var nameLabel = views.nameLabel
+    
+    private lazy var rateLabel = views.rateLabel
+    
+    private lazy var infoLabel = views.infoLabel
+    
+    private lazy var aboutLabel = views.aboutLabel
+    
+    private lazy var castLabel = views.castLabel
+    
+    //MARK: View Models
+    private var movieCastViewModel = SelectedMovieViewModel()
+    private var serialCastViewModel = SelectedSerialViewModel()
+    
+    var serial: Bool?
+    
+    //MARK: Life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,16 +45,52 @@ class SelectedMovieController: UIViewController {
         setupUI()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        goBackButton.layer.cornerRadius = goBackButton.bounds.height / 2
+        saveButton.layer.cornerRadius = saveButton.bounds.height / 2
+    }
+    
+    //MARK: Network functions
+    private func fetchDataMovie(id: String) {
+        movieCastViewModel.getData(id: id) {
+            self.castCollectionView.reloadData()
+        }
+    }
+    
+    private func fetchDataSerial(id: String) {
+        serialCastViewModel.getData(id: id) {
+            self.castCollectionView.reloadData()
+        }
+    }
+    
+    //MARK: UI Configure
     private func setupUI() {
+        
+        castCollectionView.dataSource = self
+        castCollectionView.delegate = self
+        castCollectionView.showsHorizontalScrollIndicator = false
+        
         goBackButton.addTarget(self, action: #selector(goBackButtonTapped), for: .touchUpInside)
         saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
     }
     
+    //MARK: AUTO LAYOUT
     private func setupConstraints() {
         view.addSubview(movieImage)
         view.addSubview(goBackButton)
         view.addSubview(saveButton)
         view.addSubview(nameLabel)
+        view.addSubview(infoLabel)
+        view.addSubview(aboutLabel)
+        view.addSubview(castLabel)
+        view.addSubview(castCollectionView)
+        
+        let starStackView = UIStackView(arrangedSubviews: [rateLabel])
+        starStackView.translatesAutoresizingMaskIntoConstraints = false
+        starStackView.axis = .horizontal
+        
+        view.addSubview(starStackView)
         
         NSLayoutConstraint.activate([
             movieImage.topAnchor.constraint(equalTo: view.topAnchor),
@@ -84,19 +108,86 @@ class SelectedMovieController: UIViewController {
             saveButton.heightAnchor.constraint(equalToConstant: 35),
             saveButton.widthAnchor.constraint(equalToConstant: 35),
             
-            nameLabel.bottomAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: -20),
+            nameLabel.bottomAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: -5),
             nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
+            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
+            infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            starStackView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 15),
+            starStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            aboutLabel.topAnchor.constraint(equalTo: starStackView.bottomAnchor, constant: 15),
+            aboutLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            aboutLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            castLabel.topAnchor.constraint(equalTo: aboutLabel.bottomAnchor, constant: 10),
+            castLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            
+            castCollectionView.topAnchor.constraint(equalTo: castLabel.bottomAnchor, constant: 10),
+            castCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            castCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            castCollectionView.heightAnchor.constraint(equalToConstant: 150),
         ])
         
     }
     
-    func configure(movie: Movie) {
-        guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(movie.backdropPath)") else { return }
-        imageConfigure(url: url)
-        nameLabel.text = movie.originalTitle
+    //MARK: GET DATA FROM NETWORK MOVIEW OR SERIAL VIEWS
+    func configure(movie: Movie?, serial: Series?) {
+        if let movieNotNil = movie {
+            NetworkingManager.shared.fetchMovieDetail(id: String(describing: movieNotNil.id)) { [self] response in
+                switch response {
+                
+                case .success(let details):
+                    self.fetchDataMovie(id: String(describing: details.id))
+                    guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(details.backdropPath!)") else { return }
+                    let gengres = details.genres.prefix(2).compactMap{ $0.name }.joined(separator: ", ")
+                    self.imageConfigure(url: url)
+                    self.nameLabel.text = details.originalTitle
+                    self.infoLabel.text = "\(details.releaseDate.convertDate()) • \(gengres) • \(details.runtime.secondsToHoursMinutesSeconds()))"
+                    self.rateLabel.text = String(describing: details.voteAverage)
+                    self.aboutLabel.text = details.overview
+                    
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        } else {
+            
+            if let serialNotNil = serial {
+                NetworkingManager.shared.fetchSerialDetail(id: String(describing: serialNotNil.id)) { [self] response in
+                    switch response {
+                    case .success(let details):
+                        self.fetchDataSerial(id: String(describing: details.id))
+                        guard let url = URL(string: "https://image.tmdb.org/t/p/w500\(details.backdropPath!)") else { return }
+                        let gengres = details.genres.prefix(2).compactMap{ $0.name }.joined(separator: ", ")
+                        self.imageConfigure(url: url)
+                        self.nameLabel.text = details.name
+                        
+                        if let runTime = details.episodeRunTime?.first {
+                            self.infoLabel.text = "\(details.firstAirDate.convertDate()) • \(gengres) • \(runTime.secondsToHoursMinutesSeconds())"
+                        } else {
+                            self.infoLabel.text = "\(details.firstAirDate.convertDate()) • \(gengres) • Time unknown"
+                        }
+                        self.rateLabel.text = String(describing: details.voteAverage)
+                        if details.overview.isEmpty {
+                            self.aboutLabel.text = "Описание к данному сериалу отсутствует"
+                        } else {
+                            self.aboutLabel.text = details.overview
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }
+        }
     }
     
+    //MARK: IMAGE DOWNLOADER
     func imageConfigure(url: URL) {
         ImageDownloadManager.shared.imageLoader(with: url) { image in
             if let image = image {
@@ -107,6 +198,7 @@ class SelectedMovieController: UIViewController {
         }
     }
     
+    //MARK: BUTTON ACTIONS
     @objc private func goBackButtonTapped() {
         dismiss(animated: true, completion: nil)
     }
@@ -115,14 +207,38 @@ class SelectedMovieController: UIViewController {
         saveButton.tintColor = .yellow
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        goBackButton.layer.cornerRadius = goBackButton.bounds.height / 2
-        saveButton.layer.cornerRadius = saveButton.bounds.height / 2
+}
+
+//MARK: DELEGATE AND DATA SOURCE COLLECTION VIEW
+extension SelectedMovieController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        movieCastViewModel.numbersOfRows()
     }
     
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let collectionView = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedCastsCollectionViewCell.identifier, for: indexPath) as! SelectedCastsCollectionViewCell
+        
+        if serial != nil {
+            
+            collectionView.configureSerial(cast: serialCastViewModel.cellForRowAt(indexPath: indexPath))
+            
+        } else {
+            
+            collectionView.configure(cast: movieCastViewModel.cellForRowAt(indexPath: indexPath))
+        }
+        
+        return collectionView
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: collectionView.frame.width / 3, height: collectionView.frame.width / 3)
+    }
 }
- 
+
 //MARK: SWIFTUI
 import SwiftUI
 

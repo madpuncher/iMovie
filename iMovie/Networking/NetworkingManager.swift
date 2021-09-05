@@ -82,6 +82,134 @@ class NetworkingManager {
         }
         .resume()
     }
+    
+    func fetchMovieDetail(id: String, completion: @escaping (Result<MovieDetailsResponse, Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)?\(Constants.apiKey)") else {
+            completion(.failure(ErrorTypes.badURL))
+            print("ERROR GET URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard
+                let data = data,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode >= 200 && response.statusCode < 300 else {
+                completion(.failure(ErrorTypes.badServerResponse))
+                print("ERROR URL RESPONSE")
+                return
+            }
+            
+            do {
+                let series = try JSONDecoder().decode(MovieDetailsResponse.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(series))
+                }
+                
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        .resume()
+    }
+    
+    func fetchSerialDetail(id: String, completion: @escaping (Result<SerialDetailResponse, Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/tv/\(id)?\(Constants.apiKey)") else {
+            completion(.failure(ErrorTypes.badURL))
+            print("ERROR GET URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard
+                let data = data,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode >= 200 && response.statusCode < 300 else {
+                completion(.failure(ErrorTypes.badServerResponse))
+                print("ERROR URL RESPONSE")
+                return
+            }
+            
+            do {
+                let series = try JSONDecoder().decode(SerialDetailResponse.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(series))
+                }
+                
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        .resume()
+    }
+    
+    func fetchMovieCast(id: String, completion: @escaping (Result<[CastMovie], Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/movie/\(id)/credits?\(Constants.apiKey)") else {
+            completion(.failure(ErrorTypes.badURL))
+            print("ERROR GET URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard
+                let data = data,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode >= 200 && response.statusCode < 300 else {
+                completion(.failure(ErrorTypes.badServerResponse))
+                print("ERROR URL RESPONSE")
+                return
+            }
+            
+            do {
+                let casts = try JSONDecoder().decode(MovieCasts.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(casts.cast))
+                }
+                
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        .resume()
+    }
+    
+    func fetchSerialCast(id: String, completion: @escaping (Result<[CastSerial], Error>) -> Void) {
+        guard let url = URL(string: "https://api.themoviedb.org/3/tv/\(id)/credits?\(Constants.apiKey)") else {
+            completion(.failure(ErrorTypes.badURL))
+            print("ERROR GET URL")
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            
+            guard
+                let data = data,
+                error == nil,
+                let response = response as? HTTPURLResponse,
+                response.statusCode >= 200 && response.statusCode < 300 else {
+                completion(.failure(ErrorTypes.badServerResponse))
+                print("ERROR URL RESPONSE")
+                return
+            }
+            
+            do {
+                let casts = try JSONDecoder().decode(SerialCasts.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(casts.cast))
+                }
+                
+            } catch let error {
+                print(error.localizedDescription)
+            }
+        }
+        .resume()
+    }
 }
 
 enum ErrorTypes: Error {
