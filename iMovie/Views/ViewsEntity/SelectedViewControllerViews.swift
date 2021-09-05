@@ -24,7 +24,7 @@ final class SelectedViewControllerViews {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         button.tintColor = .white
-        button.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 0.4481212236)
+        button.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 0.1889515672)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -34,7 +34,7 @@ final class SelectedViewControllerViews {
         button.setImage(UIImage(named: "save"), for: .normal)
         button.imageEdgeInsets = UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
         button.tintColor = .white
-        button.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 0.4481212236)
+        button.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 0.1889515672)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
