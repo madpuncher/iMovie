@@ -18,7 +18,7 @@ class NetworkingManager {
         static let urlTV = "https://api.themoviedb.org/3/discover/tv?"
         static let apiKey = "api_key=31631b72026494daeff5cfeb814438e7"
     }
-    
+        
     func fetchMoviesData(completion: @escaping ((Result<[Movie], Error>)) -> Void) {
         guard let url = URL(string: "\(Constants.urlMovies)\(Constants.apiKey)") else {
             completion(.failure(ErrorTypes.badURL))
@@ -28,13 +28,8 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
             
@@ -60,15 +55,11 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
+
             
             do {
                 let series = try JSONDecoder().decode(SeriesResponse.self, from: data)
@@ -92,15 +83,11 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
+
             
             do {
                 let series = try JSONDecoder().decode(MovieDetailsResponse.self, from: data)
@@ -124,13 +111,8 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
             
@@ -156,13 +138,8 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
             
@@ -188,13 +165,8 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
             
@@ -221,15 +193,11 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
+
             
             do {
                 let video = try JSONDecoder().decode(MovieVideo.self, from: data)
@@ -254,15 +222,11 @@ class NetworkingManager {
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             
-            guard
-                let data = data,
-                error == nil,
-                let response = response as? HTTPURLResponse,
-                response.statusCode >= 200 && response.statusCode < 300 else {
+            guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
-                print("ERROR URL RESPONSE")
                 return
             }
+
             
             do {
                 let video = try JSONDecoder().decode(SerieVideo.self, from: data)
@@ -278,6 +242,17 @@ class NetworkingManager {
         .resume()
     }
 
+    ///CHECKER && HANDLER FOR ERROR AND RESPONSE
+    private func dataHandle(response: URLResponse?, error: Error?) -> Bool {
+        guard
+            error == nil,
+            let response = response as? HTTPURLResponse,
+            response.statusCode >= 200 && response.statusCode < 300 else {
+            print("ERROR URL RESPONSE")
+            return false
+        }
+        return true
+    }
 }
 
 enum ErrorTypes: Error {

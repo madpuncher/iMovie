@@ -17,6 +17,7 @@ class SelectedCastsCollectionViewCell: UICollectionViewCell {
         return indicator
     }()
     
+    
     private let castImage: UIImageView = {
         let image = UIImageView(image: UIImage(named: "empty"))
         image.contentMode = .scaleAspectFill
