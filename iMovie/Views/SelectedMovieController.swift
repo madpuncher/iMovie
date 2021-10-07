@@ -35,6 +35,14 @@ class SelectedMovieController: UIViewController {
     
     private lazy var showButton = views.showButton
     
+    private let containerView = UIView()
+    
+    private let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.showsVerticalScrollIndicator = false
+        return scroll
+    }()
+    
     //MARK: View Models
     private var movieCastViewModel = SelectedMovieViewModel()
     private var serialCastViewModel = SelectedSerialViewModel()
@@ -46,6 +54,9 @@ class SelectedMovieController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        
         setupConstraints()
         view.backgroundColor = #colorLiteral(red: 0.08937712759, green: 0.0966457352, blue: 0.1299476326, alpha: 1)
         setupUI()
@@ -53,6 +64,9 @@ class SelectedMovieController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        setupScrollView()
+        
         goBackButton.layer.cornerRadius = goBackButton.bounds.height / 2
         saveButton.layer.cornerRadius = saveButton.bounds.height / 2
     }
@@ -122,70 +136,82 @@ class SelectedMovieController: UIViewController {
     }
     
     //MARK: AUTO LAYOUT
+    
+    private func setupScrollView() {
+        
+        scrollView.frame = view.frame
+        containerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: scrollView.contentSize.height + 30)
+        
+        let contentRect: CGRect = scrollView.subviews.reduce(into: .zero) { rect, view in
+            rect = rect.union(view.frame)
+        }
+        scrollView.contentSize = contentRect.size
+    }
+    
     private func setupConstraints() {
-        view.addSubview(movieImage)
-        view.addSubview(goBackButton)
-        view.addSubview(saveButton)
-        view.addSubview(nameLabel)
-        view.addSubview(infoLabel)
-        view.addSubview(aboutLabel)
-        view.addSubview(castLabel)
-        view.addSubview(castCollectionView)
-        view.addSubview(stars)
-        view.addSubview(showButton)
+        containerView.addSubview(movieImage)
+        containerView.addSubview(goBackButton)
+        containerView.addSubview(saveButton)
+        containerView.addSubview(nameLabel)
+        containerView.addSubview(infoLabel)
+        containerView.addSubview(aboutLabel)
+        containerView.addSubview(castLabel)
+        containerView.addSubview(castCollectionView)
+        containerView.addSubview(stars)
+        containerView.addSubview(showButton)
         
         let starStackView = UIStackView(arrangedSubviews: [rateLabel, stars])
         starStackView.translatesAutoresizingMaskIntoConstraints = false
         starStackView.axis = .horizontal
         starStackView.spacing = 10
         
-        view.addSubview(starStackView)
+        containerView.addSubview(starStackView)
         
         NSLayoutConstraint.activate([
-            movieImage.topAnchor.constraint(equalTo: view.topAnchor),
-            movieImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            movieImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            movieImage.topAnchor.constraint(equalTo: containerView.topAnchor),
+            movieImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            movieImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             movieImage.heightAnchor.constraint(equalToConstant: view.bounds.height / 2),
             
-            goBackButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            goBackButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            goBackButton.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: 10),
+            goBackButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             goBackButton.heightAnchor.constraint(equalToConstant: 35),
             goBackButton.widthAnchor.constraint(equalToConstant: 35),
             
-            saveButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            saveButton.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: 10),
+            saveButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             saveButton.heightAnchor.constraint(equalToConstant: 35),
             saveButton.widthAnchor.constraint(equalToConstant: 35),
             
             nameLabel.bottomAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: -5),
-            nameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            nameLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            nameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             
-            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             infoLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
-            infoLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            infoLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            infoLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            infoLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             
             starStackView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 15),
-            starStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            starStackView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             
             aboutLabel.topAnchor.constraint(equalTo: starStackView.bottomAnchor, constant: 15),
-            aboutLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            aboutLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            aboutLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            aboutLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             
             castLabel.topAnchor.constraint(equalTo: aboutLabel.bottomAnchor, constant: 10),
-            castLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            castLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             
             castCollectionView.topAnchor.constraint(equalTo: castLabel.bottomAnchor, constant: 10),
-            castCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            castCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            castCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            castCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             castCollectionView.heightAnchor.constraint(equalToConstant: 150),
             
             showButton.topAnchor.constraint(equalTo: castCollectionView.bottomAnchor, constant: 10),
             showButton.widthAnchor.constraint(equalToConstant: view.bounds.width / 2),
             showButton.heightAnchor.constraint(equalToConstant: 50),
-            showButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            showButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor)
         ])
         
     }

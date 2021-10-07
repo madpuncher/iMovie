@@ -24,6 +24,10 @@ class MainViewController: UIViewController {
     
     private lazy var headerLabel = views.headerLabel
     
+    private let containerView = UIView()
+    
+    private let scrollView = UIScrollView()
+    
     //MARK: View Models
     private var movieViewModel = MovieViewModel()
     
@@ -33,9 +37,25 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.addSubview(scrollView)
+        
+        scrollView.addSubview(containerView)
+                
         setupUI()
         setupConstraints()
         fetchData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let contentRect: CGRect = scrollView.subviews.reduce(into: .zero) { rect, view in
+            rect = rect.union(view.frame)
+        }
+        scrollView.contentSize = contentRect.size
+        
+        scrollView.frame = view.bounds
+        containerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: scrollView.contentSize.height)
     }
     
     private func fetchData() {
@@ -65,33 +85,33 @@ class MainViewController: UIViewController {
     //MARK: Auto layout
     private func setupConstraints() {
         
-        view.addSubview(headerLabel)
-        view.addSubview(movieCollectionView)
-        view.addSubview(movieHeaderLabel)
-        view.addSubview(TVCollectionView)
-        view.addSubview(tvHeaderLabel)
-        view.addSubview(searchButton)
+        containerView.addSubview(headerLabel)
+        containerView.addSubview(movieCollectionView)
+        containerView.addSubview(movieHeaderLabel)
+        containerView.addSubview(TVCollectionView)
+        containerView.addSubview(tvHeaderLabel)
+        containerView.addSubview(searchButton)
         
         NSLayoutConstraint.activate([
-            headerLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            headerLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            headerLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            headerLabel.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: 10),
             
-            searchButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            searchButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            searchButton.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: 20),
             
-            movieHeaderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            movieHeaderLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             movieHeaderLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 20),
             
-            movieCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            movieCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            movieCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            movieCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             movieCollectionView.heightAnchor.constraint(equalToConstant: 300),
             movieCollectionView.topAnchor.constraint(equalTo: movieHeaderLabel.bottomAnchor),
             
-            tvHeaderLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tvHeaderLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             tvHeaderLabel.topAnchor.constraint(equalTo: movieCollectionView.bottomAnchor, constant: -20),
             
-            TVCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            TVCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            TVCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            TVCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             TVCollectionView.heightAnchor.constraint(equalToConstant: 300),
             TVCollectionView.topAnchor.constraint(equalTo: tvHeaderLabel.bottomAnchor, constant: -30),
             
@@ -197,3 +217,4 @@ struct MainViewController_Preview: PreviewProvider {
         }
     }
 }
+
