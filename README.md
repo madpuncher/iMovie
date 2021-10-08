@@ -18,5 +18,5 @@
 # What else would I add?
 1) More correct layout for all devices
 2) Ability to add a movie to favorites
-3) Add scroll view to all screens
+3) Fix a bug with the screen when the scroll view is larger than the view
 4) The ability to search for films
