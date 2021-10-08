@@ -35,13 +35,10 @@ class SelectedMovieController: UIViewController {
     
     private lazy var showButton = views.showButton
     
-    private let containerView = UIView()
-    
-    private let scrollView: UIScrollView = {
-        let scroll = UIScrollView()
-        scroll.showsVerticalScrollIndicator = false
-        return scroll
-    }()
+    private lazy var scrollView = views.scrollView
+
+    private lazy var containerView = views.containerView
+
     
     //MARK: View Models
     private var movieCastViewModel = SelectedMovieViewModel()
@@ -136,13 +133,12 @@ class SelectedMovieController: UIViewController {
     }
     
     //MARK: AUTO LAYOUT
-    
     private func setupScrollView() {
         
-        scrollView.frame = view.frame
-        containerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: scrollView.contentSize.height + 30)
+        scrollView.frame = view.bounds
+        containerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: scrollView.contentSize.height)
         
-        let contentRect: CGRect = scrollView.subviews.reduce(into: .zero) { rect, view in
+        let contentRect: CGRect = containerView.subviews.reduce(into: .zero) { rect, view in
             rect = rect.union(view.frame)
         }
         scrollView.contentSize = contentRect.size

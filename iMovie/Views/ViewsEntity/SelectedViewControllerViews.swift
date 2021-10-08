@@ -10,6 +10,14 @@ import Cosmos
 
 final class SelectedViewControllerViews {
     
+    public let containerView = UIView()
+    
+    public let scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.showsVerticalScrollIndicator = false
+        return scroll
+    }()
+    
     public let castCollectionView: UICollectionView = {
         let flow = UICollectionViewFlowLayout()
         flow.scrollDirection = .horizontal
@@ -48,7 +56,6 @@ final class SelectedViewControllerViews {
     
     public let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Wonder Woman"
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.5
         label.textColor = .white
@@ -65,7 +72,6 @@ final class SelectedViewControllerViews {
     
     public let rateLabel: UILabel = {
         let label = UILabel()
-        label.text = "7.9"
         label.textColor = #colorLiteral(red: 0.9853249192, green: 0.7781492472, blue: 0.2004194856, alpha: 1)
         label.font = .boldSystemFont(ofSize: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -74,7 +80,6 @@ final class SelectedViewControllerViews {
     
     public let infoLabel: UILabel = {
         let label = UILabel()
-        label.text = "2020 • Adventure, Action • 2h 35m"
         label.textColor = .gray
         label.font = .boldSystemFont(ofSize: 17)
         label.adjustsFontSizeToFitWidth = true
@@ -86,11 +91,10 @@ final class SelectedViewControllerViews {
     
     public let aboutLabel: UILabel = {
         let label = UILabel()
-        label.text = "BLALALALALALALALALALALDSLDSALSADLDSLDSALDLSLSDALSDALSDLDSALDSALSDALLDS"
         label.textColor = .gray
         label.font = .boldSystemFont(ofSize: 17)
         label.textAlignment = .left
-        label.numberOfLines = 3
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

@@ -40,16 +40,30 @@ class MainViewController: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(containerView)
-                
+        
         setupUI()
         setupConstraints()
         fetchData()
+        
+        if !NetworkingManager.shared.isConnectedToNetwork() {
+            unableConnect()
+        }
+    }
+    
+    func unableConnect() {
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(title: "Ошибка",
+                                          message: "Отсутствует подключение к интернету",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Закрыть", style: .default, handler: nil))
+            self?.present(alert, animated: true, completion: nil)
+        }
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        let contentRect: CGRect = scrollView.subviews.reduce(into: .zero) { rect, view in
+        let contentRect: CGRect = containerView.subviews.reduce(into: .zero) { rect, view in
             rect = rect.union(view.frame)
         }
         scrollView.contentSize = contentRect.size
@@ -143,7 +157,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             
             let collectionView = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.identifier,
                                                                     for: indexPath) as! MovieCollectionViewCell
-                        
+            
             let movie = movieViewModel.cellForRowAt(indexPath: indexPath)
             
             collectionView.configure(movie: movie)
@@ -165,24 +179,29 @@ extension MainViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == movieCollectionView {
-            
-            let movieVC = SelectedMovieController()
-            
-            movieVC.configure(movie: movieViewModel.cellForRowAt(indexPath: indexPath), serial: nil)
-            movieVC.modalPresentationStyle = .fullScreen
-            
-            present(movieVC, animated: true, completion: nil)
-            
+        if !NetworkingManager.shared.isConnectedToNetwork() {
+            unableConnect()
         } else {
             
-            let movieVC = SelectedMovieController()
-            
-            movieVC.serial = true
-            movieVC.configure(movie: nil, serial: seriesViewModel.cellForRowAt(indexPath: indexPath))
-            movieVC.modalPresentationStyle = .fullScreen
-            
-            present(movieVC, animated: true, completion: nil)
+            if collectionView == movieCollectionView {
+                
+                let movieVC = SelectedMovieController()
+                
+                movieVC.configure(movie: movieViewModel.cellForRowAt(indexPath: indexPath), serial: nil)
+                movieVC.modalPresentationStyle = .fullScreen
+                
+                present(movieVC, animated: true, completion: nil)
+                
+            } else {
+                
+                let movieVC = SelectedMovieController()
+                
+                movieVC.serial = true
+                movieVC.configure(movie: nil, serial: seriesViewModel.cellForRowAt(indexPath: indexPath))
+                movieVC.modalPresentationStyle = .fullScreen
+                
+                present(movieVC, animated: true, completion: nil)
+            }
         }
     }
     

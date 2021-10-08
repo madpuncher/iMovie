@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0252E81627104EE800240FD7 /* MainViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252E81527104EE800240FD7 /* MainViewControllerTest.swift */; };
 		02D71CFD26E115E1002BD97C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71CFC26E115E1002BD97C /* AppDelegate.swift */; };
 		02D71CFF26E115E1002BD97C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71CFE26E115E1002BD97C /* SceneDelegate.swift */; };
 		02D71D0126E115E1002BD97C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71D0026E115E1002BD97C /* MainViewController.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0252E81527104EE800240FD7 /* MainViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerTest.swift; sourceTree = "<group>"; };
 		02D71CF926E115E1002BD97C /* iMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02D71CFC26E115E1002BD97C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02D71CFE26E115E1002BD97C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +73,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0252E81427104EA700240FD7 /* UTests */ = {
+			isa = PBXGroup;
+			children = (
+				0252E81527104EE800240FD7 /* MainViewControllerTest.swift */,
+			);
+			path = UTests;
+			sourceTree = "<group>";
+		};
 		02D71CF026E115E1002BD97C = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +108,7 @@
 				02D71D1126E1167D002BD97C /* Controllers */,
 				02D71D1326E11688002BD97C /* Helpers */,
 				02D71D1426E11AC0002BD97C /* Extensions */,
+				0252E81427104EA700240FD7 /* UTests */,
 				02D71D0A26E115E3002BD97C /* Info.plist */,
 			);
 			path = iMovie;
@@ -290,6 +301,7 @@
 				02D71D3D26E4C9CF002BD97C /* MainViewControllerViews.swift in Sources */,
 				02D71D2926E15F5D002BD97C /* SeriesResponse.swift in Sources */,
 				02D71D3A26E3A35B002BD97C /* SelectedSerialViewModel.swift in Sources */,
+				0252E81627104EE800240FD7 /* MainViewControllerTest.swift in Sources */,
 				02D71D2226E12E9C002BD97C /* TVCollectionViewCell.swift in Sources */,
 				02D71CFF26E115E1002BD97C /* SceneDelegate.swift in Sources */,
 			);
