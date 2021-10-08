@@ -13,7 +13,7 @@ class NetworkingManager {
     static let shared = NetworkingManager()
     
     private var cache = URLCache.shared
-    private var timeOut: TimeInterval = 3600
+    private var timeOut : TimeInterval = 3600
 
     private init() {}
     
@@ -139,15 +139,7 @@ class NetworkingManager {
             return
         }
         
-        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: timeOut)
-        
-        if let cashedRequest = cache.cachedResponse(for: request),
-           let time = cashedRequest.userInfo?.first(where: { $0.key as? String == "date" })?.value as? Date,
-           time.addingTimeInterval(3600) < Date() {
-            cache.removeAllCachedResponses()
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
@@ -157,11 +149,7 @@ class NetworkingManager {
             
             do {
                 let series = try JSONDecoder().decode(MovieDetailsResponse.self, from: data)
-                if let cachedResponse = self.cache.cachedResponse(for: request) {
-                    self.cache.storeCachedResponse(cachedResponse, for: request)
-                } else {
-                    self.cache.storeCachedResponse(CachedURLResponse(response: response!, data: data, userInfo: ["date": Date()], storagePolicy: .allowed), for: request)
-                }
+
                 DispatchQueue.main.async {
                     completion(.success(series))
                 }
@@ -180,15 +168,7 @@ class NetworkingManager {
             return
         }
         
-        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: timeOut)
-        
-        if let cashedRequest = cache.cachedResponse(for: request),
-           let time = cashedRequest.userInfo?.first(where: { $0.key as? String == "date" })?.value as? Date,
-           time.addingTimeInterval(3600) < Date() {
-            cache.removeAllCachedResponses()
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
@@ -197,12 +177,6 @@ class NetworkingManager {
             
             do {
                 let series = try JSONDecoder().decode(SerialDetailResponse.self, from: data)
-                
-                if let cachedResponse = self.cache.cachedResponse(for: request) {
-                    self.cache.storeCachedResponse(cachedResponse, for: request)
-                } else {
-                    self.cache.storeCachedResponse(CachedURLResponse(response: response!, data: data, userInfo: ["date": Date()], storagePolicy: .allowed), for: request)
-                }
                 
                 DispatchQueue.main.async {
                     completion(.success(series))
@@ -222,15 +196,7 @@ class NetworkingManager {
             return
         }
         
-        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: timeOut)
-        
-        if let cashedRequest = cache.cachedResponse(for: request),
-           let time = cashedRequest.userInfo?.first(where: { $0.key as? String == "date" })?.value as? Date,
-           time.addingTimeInterval(3600) < Date() {
-            cache.removeAllCachedResponses()
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
@@ -239,12 +205,6 @@ class NetworkingManager {
             
             do {
                 let casts = try JSONDecoder().decode(MovieCasts.self, from: data)
-                
-                if let cachedResponse = self.cache.cachedResponse(for: request) {
-                    self.cache.storeCachedResponse(cachedResponse, for: request)
-                } else {
-                    self.cache.storeCachedResponse(CachedURLResponse(response: response!, data: data, userInfo: ["date": Date()], storagePolicy: .allowed), for: request)
-                }
                 
                 DispatchQueue.main.async {
                     completion(.success(casts.cast))
@@ -264,15 +224,7 @@ class NetworkingManager {
             return
         }
         
-        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: timeOut)
-        
-        if let cashedRequest = cache.cachedResponse(for: request),
-           let time = cashedRequest.userInfo?.first(where: { $0.key as? String == "date" })?.value as? Date,
-           time.addingTimeInterval(3600) < Date() {
-            cache.removeAllCachedResponses()
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
@@ -281,12 +233,6 @@ class NetworkingManager {
             
             do {
                 let casts = try JSONDecoder().decode(SerialCasts.self, from: data)
-                
-                if let cachedResponse = self.cache.cachedResponse(for: request) {
-                    self.cache.storeCachedResponse(cachedResponse, for: request)
-                } else {
-                    self.cache.storeCachedResponse(CachedURLResponse(response: response!, data: data, userInfo: ["date": Date()], storagePolicy: .allowed), for: request)
-                }
                 
                 DispatchQueue.main.async {
                     completion(.success(casts.cast))
@@ -307,15 +253,7 @@ class NetworkingManager {
             return
         }
         
-        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: timeOut)
-        
-        if let cashedRequest = cache.cachedResponse(for: request),
-           let time = cashedRequest.userInfo?.first(where: { $0.key as? String == "date" })?.value as? Date,
-           time.addingTimeInterval(3600) < Date() {
-            cache.removeAllCachedResponses()
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
@@ -325,13 +263,7 @@ class NetworkingManager {
             
             do {
                 let video = try JSONDecoder().decode(MovieVideo.self, from: data)
-                
-                if let cachedResponse = self.cache.cachedResponse(for: request) {
-                    self.cache.storeCachedResponse(cachedResponse, for: request)
-                } else {
-                    self.cache.storeCachedResponse(CachedURLResponse(response: response!, data: data, userInfo: ["date": Date()], storagePolicy: .allowed), for: request)
-                }
-                
+
                 DispatchQueue.main.async {
                     completion(.success(video.results.us.link))
                 }
@@ -350,16 +282,8 @@ class NetworkingManager {
             print("ERROR GET URL")
             return
         }
-        
-        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: timeOut)
-        
-        if let cashedRequest = cache.cachedResponse(for: request),
-           let time = cashedRequest.userInfo?.first(where: { $0.key as? String == "date" })?.value as? Date,
-           time.addingTimeInterval(3600) < Date() {
-            cache.removeAllCachedResponses()
-        }
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
+ 
+        URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let data = data, self.dataHandle(response: response, error: error) else {
                 completion(.failure(ErrorTypes.badServerResponse))
@@ -369,13 +293,7 @@ class NetworkingManager {
             
             do {
                 let video = try JSONDecoder().decode(SerieVideo.self, from: data)
-                
-                if let cachedResponse = self.cache.cachedResponse(for: request) {
-                    self.cache.storeCachedResponse(cachedResponse, for: request)
-                } else {
-                    self.cache.storeCachedResponse(CachedURLResponse(response: response!, data: data, userInfo: ["date": Date()], storagePolicy: .allowed), for: request)
-                }
-                
+           
                 DispatchQueue.main.async {
                     completion(.success(video.results.us.link))
                 }
