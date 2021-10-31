@@ -13,7 +13,7 @@ class NetworkingManager {
     static let shared = NetworkingManager()
     
     private var cache = URLCache.shared
-    private var timeOut : TimeInterval = 3600
+    private var timeOut: TimeInterval = 3600
 
     private init() {}
     
