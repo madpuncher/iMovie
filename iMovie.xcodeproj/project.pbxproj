@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0252E81627104EE800240FD7 /* MainViewControllerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0252E81527104EE800240FD7 /* MainViewControllerTest.swift */; };
+		02776B85272E9C34002335A2 /* AffdsfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02776B84272E9C34002335A2 /* AffdsfViewController.swift */; };
 		02D71CFD26E115E1002BD97C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71CFC26E115E1002BD97C /* AppDelegate.swift */; };
 		02D71CFF26E115E1002BD97C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71CFE26E115E1002BD97C /* SceneDelegate.swift */; };
 		02D71D0126E115E1002BD97C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D71D0026E115E1002BD97C /* MainViewController.swift */; };
@@ -35,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		0252E81527104EE800240FD7 /* MainViewControllerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewControllerTest.swift; sourceTree = "<group>"; };
+		02776B84272E9C34002335A2 /* AffdsfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffdsfViewController.swift; sourceTree = "<group>"; };
 		02D71CF926E115E1002BD97C /* iMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02D71CFC26E115E1002BD97C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		02D71CFE26E115E1002BD97C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				02D71D2C26E22486002BD97C /* SelectedMovieController.swift */,
 				02D71D3026E36663002BD97C /* Cells */,
 				02D71D3B26E4C9A9002BD97C /* ViewsEntity */,
+				02776B84272E9C34002335A2 /* AffdsfViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -301,6 +304,7 @@
 				02D71D3D26E4C9CF002BD97C /* MainViewControllerViews.swift in Sources */,
 				02D71D2926E15F5D002BD97C /* SeriesResponse.swift in Sources */,
 				02D71D3A26E3A35B002BD97C /* SelectedSerialViewModel.swift in Sources */,
+				02776B85272E9C34002335A2 /* AffdsfViewController.swift in Sources */,
 				0252E81627104EE800240FD7 /* MainViewControllerTest.swift in Sources */,
 				02D71D2226E12E9C002BD97C /* TVCollectionViewCell.swift in Sources */,
 				02D71CFF26E115E1002BD97C /* SceneDelegate.swift in Sources */,
